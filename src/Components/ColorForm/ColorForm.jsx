@@ -1,42 +1,57 @@
+import { useState } from "react";
 import ColorInput from "../ColorInput/ColorInput";
+import { nanoid } from "nanoid";
 
-export default function ColorForm({
-  onSubmitColor,
-  initialData = { role: "some color", hex: "#123456", contrastText: "#ffffff" },
-}) {
+export default function ColorForm({ onSubmitColor, initialData }) {
+  const [role, setRole] = useState(initialData?.role || "");
+  const [hex, setHex] = useState(initialData?.hex || "#121212");
+  const [contrastText, setContrastText] = useState(
+    initialData?.contrastText || "#ffffff"
+  );
+
   function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    onSubmitColor(data); // إرسال البيانات إلى `App`
+
+    const newColor = {
+      id: initialData?.id || nanoid(),
+      role,
+      hex,
+      contrastText,
+    };
+
+    onSubmitColor(newColor);
   }
 
   return (
     <form className="color-form" onSubmit={handleSubmit}>
-      <label htmlFor="role">
+      <label>
         Role
         <br />
         <input
           type="text"
-          id="role"
-          name="role"
-          defaultValue={initialData.role}
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
         />
       </label>
-      <br />
-      <label htmlFor="hex">
+
+      <label>
         Hex
         <br />
-        <ColorInput id="hex" defaultValue={initialData.hex} />
+        <ColorInput value={hex} onChange={(e) => setHex(e.target.value)} />
       </label>
-      <br />
-      <label htmlFor="contrastText">
+
+      <label>
         Contrast Text
         <br />
-        <ColorInput id="contrastText" defaultValue={initialData.contrastText} />
+        <ColorInput
+          value={contrastText}
+          onChange={(e) => setContrastText(e.target.value)}
+        />
       </label>
-      <br />
-      <button>ADD COLOR</button>
+
+      <button type="submit">
+        {initialData ? "Save Changes" : "Add Color"}
+      </button>
     </form>
   );
 }
