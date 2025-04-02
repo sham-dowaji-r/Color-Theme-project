@@ -1,27 +1,31 @@
-import { initialColors } from "./lib/colors";
-import Color from "./Components/Color/Color";
-import "./App.css";
 import { useState } from "react";
 import ColorForm from "./Components/ColorForm/ColorForm";
+import Color from "./Components/Color/Color"; // هذا المكون يعرض بطاقة اللون
+import { initialColors } from "./lib/colors";
 
-function App() {
+export default function App() {
+  // الحالة لتخزين الألوان المضافة
   const [colors, setColors] = useState(initialColors);
 
-  const addColor = (newColor) => {
-    setColors([newColor, ...colors]); // إضافة اللون في الأعلى
-  };
+  // الدالة التي تتعامل مع إرسال البيانات من النموذج
+  function handleAddColor(newColor) {
+    // نضيف اللون الجديد إلى بداية القائمة
+    setColors([newColor, ...colors]);
+  }
 
   return (
-    <>
+    <div>
       <h1>Theme Creator</h1>
 
-      <ColorForm onAddColor={addColor} />
+      {/* عرض النموذج لإضافة لون جديد */}
+      <ColorForm onSubmitColor={handleAddColor} />
 
-      {colors.map((color) => {
-        return <Color key={color.id} color={color} />;
-      })}
-    </>
+      {/* عرض الألوان المضافة على شكل بطاقات */}
+      <div className="color-cards-container">
+        {colors.map((color, index) => (
+          <Color key={index} color={color} />
+        ))}
+      </div>
+    </div>
   );
 }
-
-export default App;
