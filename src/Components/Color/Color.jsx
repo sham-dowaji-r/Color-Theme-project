@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ColorForm from "../ColorForm/ColorForm";
 import "./Color.css";
+import CopyToClipboard from "../CopyToClipboard/CopyToClipboard";
 
 export default function Color({ color, onUpdatedColor, onDeleteColor }) {
   const [editMode, setEditMode] = useState(false); // تتبع وضع التعديل
@@ -31,11 +32,14 @@ export default function Color({ color, onUpdatedColor, onDeleteColor }) {
         <ColorForm initialData={color} onSubmitColor={handleEdit} />
       ) : (
         <>
-          <h3>{color.hex}</h3>
+          <span>
+            <h3>{color.hex} </h3> <CopyToClipboard textToCopy={color.hex} />{" "}
+          </span>
           <h4>{color.role}</h4>
           <p>Contrast: {color.contrastText}</p>
-          <button onClick={() => setEditMode(true)}>Edit</button>
-          <button onClick={deleteColor}>Delete</button>
+
+          <button onClick={() => setEditMode(true)}>EDIT</button>
+          <button onClick={deleteColor}>DELETE</button>
         </>
       )}
 
@@ -44,8 +48,8 @@ export default function Color({ color, onUpdatedColor, onDeleteColor }) {
           <div>
             <span>
               <p className="color-card-highlight">Are you sure?</p>{" "}
-              <span></span> <button onClick={confirmDeleteColor}>Delete</button>
-              <button onClick={cancelDelete}>Cancel</button>
+              <span></span> <button onClick={confirmDeleteColor}>DELETE</button>
+              <button onClick={cancelDelete}>CANCEL</button>
             </span>
           </div>
         </div>
