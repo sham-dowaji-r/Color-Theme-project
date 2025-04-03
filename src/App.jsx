@@ -19,23 +19,27 @@ export default function App() {
     );
   }
 
+  function handleDeleteColor(colorId) {
+    setColors(
+      (prevColors) => prevColors.filter((color) => color.id !== colorId) // إزالة اللون بناءً على الـ id
+    );
+  }
+
   return (
-    <div>
-      <h1>Theme Creator</h1>
-
-      {/* نموذج إضافة لون جديد */}
+    <>
       <ColorForm onSubmitColor={handleAddColor} />
-
-      {/* عرض الألوان */}
-      <div className="color-cards-container">
-        {colors.map((color) => (
+      {colors.length === 0 ? (
+        <p>No Colos..Start by adding one!</p> // رسالة إذا كانت القائمة فارغة
+      ) : (
+        colors.map((color) => (
           <Color
             key={color.id}
             color={color}
             onUpdatedColor={handleEditColor}
+            onDeleteColor={handleDeleteColor} // تمرير وظيفة الحذف
           />
-        ))}
-      </div>
-    </div>
+        ))
+      )}
+    </>
   );
 }
