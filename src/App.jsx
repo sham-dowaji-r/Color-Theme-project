@@ -1,11 +1,14 @@
-import { useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 import ColorForm from "./Components/ColorForm/ColorForm";
 import Color from "./Components/Color/Color";
 import { initialColors } from "./lib/colors";
 import "./App.css";
 
 export default function App() {
-  const [colors, setColors] = useState(initialColors);
+  const [colors, setColors] = useLocalStorageState("themeColors", {
+    defaultValue: initialColors,
+  });
+  console.log("Current Colors:", colors);
 
   function handleAddColor(newColor) {
     setColors([newColor, ...colors]); // إضافة اللون الجديد في البداية
@@ -28,9 +31,7 @@ export default function App() {
   return (
     <>
       <ColorForm onSubmitColor={handleAddColor} />
-      {colors.length === 0 ? (
-        <p>No Colos..Start by adding one!</p> // رسالة إذا كانت القائمة فارغة
-      ) : (
+      {colors.length > 0 ? (
         colors.map((color) => (
           <Color
             key={color.id}
@@ -39,6 +40,9 @@ export default function App() {
             onDeleteColor={handleDeleteColor} // تمرير وظيفة الحذف
           />
         ))
+      ) : (
+        // رسالة إذا كانت القائمة فارغة
+        <p>No Colos..Start by adding one!</p>
       )}
     </>
   );
