@@ -5,6 +5,7 @@ import { initialColors } from "./lib/colors";
 import "./App.css";
 
 export default function App() {
+  // تخزين الألوان في المتصفح
   const [colors, setColors] = useLocalStorageState("themeColors", {
     defaultValue: initialColors,
   });
@@ -16,8 +17,8 @@ export default function App() {
 
   function handleEditColor(updatedColor) {
     setColors((prevColors) =>
-      prevColors.map((color) =>
-        color.id === updatedColor.id ? updatedColor : color
+      prevColors.map(
+        (color) => (color.id === updatedColor.id ? updatedColor : color) // تحديث اللون المحدد
       )
     );
   }
@@ -36,7 +37,7 @@ export default function App() {
           <Color
             key={color.id}
             color={color}
-            onUpdatedColor={handleEditColor}
+            onUpdatedColor={handleEditColor} //تمرير وظيفة التعديل
             onDeleteColor={handleDeleteColor} // تمرير وظيفة الحذف
           />
         ))
